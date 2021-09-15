@@ -4,13 +4,16 @@ import akka.actor.{ActorSystem, Actor, Props, ActorRef}
 
 object EskimiTechnicalTask extends App{
 
+    //companion object for BidAgent
     object BidAgent{
         import CampaignManager.{Impression, User, Site}
         case class CampaignMatcher(imp:Impression, user:User, site: Site)
     
     }
 
+    //Bid Agent Actor
     class BidAgent extends Actor{
+        //importing objects
         import BidAgent._
         import CampaignManager._
         override def receive: Receive = {
@@ -47,9 +50,6 @@ object EskimiTechnicalTask extends App{
             case StartCampaign(bidRef) => 
                 bidRef ! myBidRequest
             case _ => println("something")
-            // case CampaignMatcher(imp, user, site) => 
-
-            //     println(s"imp:$imp, user:$user, site:$site")
         }
   }
 
@@ -128,8 +128,6 @@ class Campaigns extends Actor{
                 }
     }
 
-//    import BidAgent._
-    //  case class BidResponse(id: String, bidRequestId: String, price: Double, adid: Option[String], banner: Option[Banner])
 import CampaignManager.StartCampaign
  val system = ActorSystem("bidSystem")
  val bidActor = system.actorOf(Props[BidAgent], "bidActor")
